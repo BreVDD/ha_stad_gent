@@ -1,7 +1,7 @@
 {
   "name": "City of Ghent Information",
   "content_in_root": false,
-  "zip_release": false,
+  "zip_release": true,
   "render_readme": true,
   "iot_class": ["Cloud Polling"]  
 }
