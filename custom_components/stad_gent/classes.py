@@ -23,18 +23,19 @@ class StadGentParkingSensor(StadGentSensor):
 
     def __init__(self, coordinator, parking):
         """Initialize the entity"""
-        name = parking["name"]
+        self._parking_name = parking["name"]
         super().__init__(
             coordinator,
-            f"stadgent_parking_{name}",
-            f"Parking {name}",
+            f"stadgent_parking_{self._parking_name}",
+            f"Parking {self._parking_name}",
             "mdi:parking",
         )
-        self.__state = parking
 
     @property
     def _state(self):
-        return self.__state
+        for parking in self.coordinator.data["parkings"]:
+            if parking["fields"]["name"] == self._parking_name:
+                return parking["fields"]
 
     @property
     def native_value(self):
@@ -60,7 +61,7 @@ class StadGentParkingSensor(StadGentSensor):
             return {
                 "capacity_total": self._state["totalcapacity"],
                 "capacity_available": self._state["availablecapacity"],
-                "capacity_left": self._state["totalcapacity"]
+                "capacity_occupied": self._state["totalcapacity"]
                 - self._state["availablecapacity"],
             }
         return None
